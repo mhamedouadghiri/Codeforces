@@ -3,7 +3,7 @@ package SetA;
 import java.math.BigInteger;
 import java.util.Scanner;
 
-public class A1 {
+public class A1_TheatreSquare {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
