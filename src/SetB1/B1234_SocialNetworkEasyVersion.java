@@ -1,46 +1,41 @@
-package SetB1;
+package SetB2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.StringTokenizer;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class B1234_SocialNetworkEasyVersion {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer token = new StringTokenizer("");
-        int n = Integer.parseInt(token.nextToken());
-        String[] xis = br.readLine().split(" ");
-        BigInteger[] xi = new BigInteger[xis.length];
-        for (int i = 0; i < xis.length; i++)
-            xi[i] = new BigInteger(xis[i]);
-        for (BigInteger bi : xi) {
-            if (t_prime(bi)) {
-                System.out.println("YES");
-            } else {
-                System.out.println("NO");
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int k = scanner.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++)
+            arr[i] = scanner.nextInt();
+
+        HashSet<Integer> hs = new HashSet<>();
+        int[] result = new int[n];
+        result[0] = arr[0];
+        hs.add(arr[0]);
+        int stored = 1, start = 0, end = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (!hs.contains(arr[i])) {
+                if (stored < k) {
+                    hs.add(arr[i]);
+                    result[end + 1] = arr[i];
+                } else {
+                    hs.remove(result[start]);
+                    hs.add(arr[i]);
+                    result[end + 1] = arr[i];
+                    start++;
+                }
+                end++;
+                stored++;
             }
         }
-    }
 
-
-    private static BigInteger sqrt(BigInteger val) {
-        BigInteger half = BigInteger.ZERO.setBit(val.bitLength() / 2);
-        BigInteger cur = half;
-        while (true) {
-            BigInteger tmp = half.add(val.divide(half)).shiftRight(1);
-            if (tmp.equals(half) || tmp.equals(cur))
-                return tmp;
-            cur = half;
-            half = tmp;
-        }
-    }
-
-    private static boolean t_prime(BigInteger xi) {
-        BigInteger sq = sqrt(xi);
-        if (!sq.multiply(sq).equals(xi))
-            return false;
-        return sq.isProbablePrime(1);
+        System.out.println(end - start + 1);
+        for (int i = end; i >= start; i--)
+            System.out.print(result[i] + " ");
     }
 }
